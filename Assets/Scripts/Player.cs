@@ -45,6 +45,11 @@ public class Player : MonoBehaviour
             Body[i].transform.position = Body[i - 1].transform.position;
         }
         Body[0].transform.position = transform.position - Direction;
+        
+        //Revisa si no se salio de los limites
+        if (GameManager.Instance.MapDistance.x + 0.5f < transform.position.x || (GameManager.Instance.MapDistance.x + 0.5f) * -1 > transform.position.x || GameManager.Instance.MapDistance.y + 0.5f < transform.position.y || (GameManager.Instance.MapDistance.y + 0.5f) * -1 > transform.position.y) {
+            GameManager.Instance.GameEnded = true;
+        }
     }
 
     public void AddBody()
