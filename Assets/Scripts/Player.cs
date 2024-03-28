@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     public List<GameObject> Body = new List<GameObject>();
     private float Timer;
     private Vector3 Direction = Vector3.right;
+    private int _Score = 0;
 
     private void Start()
     {
@@ -34,6 +35,8 @@ public class Player : MonoBehaviour
         {
             transform.Translate(Direction);
             Timer = 0f;
+            _Score++;
+            GameManager.Instance.ActualScore = _Score;
             UpdatePosition();
         }
     }
@@ -46,7 +49,6 @@ public class Player : MonoBehaviour
         }
         Body[0].transform.position = transform.position - Direction;
         
-        //Revisa si no se salio de los limites
         if (GameManager.Instance.MapDistance.x + 0.5f < transform.position.x || (GameManager.Instance.MapDistance.x + 0.5f) * -1 > transform.position.x || GameManager.Instance.MapDistance.y + 0.5f < transform.position.y || (GameManager.Instance.MapDistance.y + 0.5f) * -1 > transform.position.y) {
             GameManager.Instance.GameEnded = true;
         }

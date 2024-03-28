@@ -1,35 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour
+public class GameManager : MonoBehaviourSingleton<GameManager>
 {
     public Vector2 MapDistance;
     public float velocityPlayer;
     public GameObject prefabBody;
     public bool GameEnded = false;
-
-    public static GameManager Instance { get; private set; }
-
-    private void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
-        }
-    }
-    private void Start()
+    public int ActualScore = 0;
+    void Start()
     {
         CalculateY();
     }
+    private void Update()
+    {
+        if (GameEnded)
+        {
+            ScoreManager.Instance.AddScore(ActualScore);
+            SceneLoader loader = new();
+            loader.LoadSceneIndex(2);
+        }
+    }
     public float GetLimits(char coord)
     {
-        int LimitX = (int) MapDistance.x/2;
-        int LimitY = (int) MapDistance.y/2;
+        int LimitX = (int)MapDistance.x / 2;
+        int LimitY = (int)MapDistance.y / 2;
         switch (coord)
         {
             case 'x':
@@ -42,6 +37,7 @@ public class GameManager : MonoBehaviour
                 return 0;
         }
     }
+
     private void CalculateY()
     {
         if (MapDistance.x % 2 == 0)
